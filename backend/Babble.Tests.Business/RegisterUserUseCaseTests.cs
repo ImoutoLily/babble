@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Babble.Core.Business.Actions;
@@ -7,19 +6,16 @@ using Babble.Core.Business.Validators;
 using Babble.Core.Models;
 using Moq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Babble.Tests.Business;
 
 public class RegisterUserUseCaseTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly RegisterUserUseCase _registerUser;
     private readonly Mock<IRegisterUserActions> _registerUserActionsMock = new();
 
-    public RegisterUserUseCaseTests(ITestOutputHelper testOutputHelper)
+    public RegisterUserUseCaseTests()
     {
-        _testOutputHelper = testOutputHelper;
         _registerUser = new RegisterUserUseCase(new UserAuthenticateValidator(), 
             _registerUserActionsMock.Object);
     }
