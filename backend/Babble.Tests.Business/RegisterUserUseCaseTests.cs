@@ -48,12 +48,16 @@ public class RegisterUserUseCaseTests
         Assert.Equal(result.Data?.UserName, userName);
     }
 
-    [Fact]
-    public async Task Register_ShouldHaveInvalidEmail()
+    [Theory]
+    [InlineData("")]
+    [InlineData("just some text")]
+    [InlineData("not@a@email.com")]
+    [InlineData("this@should.be.invalid.with.so.many.extensions")]
+    public async Task Register_ShouldHaveInvalidEmail(string email)
     {
         var authenticate = new UserAuthenticate
         {
-            Email = "",
+            Email = email,
             UserName = "Bobby",
             Password = "Password123*"
         };
