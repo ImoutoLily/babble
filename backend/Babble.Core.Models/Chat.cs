@@ -4,7 +4,7 @@ namespace Babble.Core.Models;
 
 public class Chat
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
     public string Title { get; set; } = null!;
 
     public IList<User> Members { get; set; } = new Collection<User>();

@@ -2,7 +2,7 @@ namespace Babble.Core.Models;
 
 public class Comment
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
     public string Content { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public DateTime? EditedAt { get; set; }

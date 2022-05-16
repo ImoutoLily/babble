@@ -2,7 +2,7 @@ namespace Babble.Core.Models;
 
 public class Message
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
     public string Content { get; set; } = null!;
 
     public User Author { get; set; } = null!;
