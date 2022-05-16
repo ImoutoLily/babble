@@ -7,9 +7,9 @@ namespace Babble.Core.Business.UseCases;
 public class RegisterUserUseCase
 {
     private readonly UserAuthenticateValidator _validator;
-    private readonly IRegisterUserAction _registerUser;
+    private readonly IRegisterUserActions _registerUser;
 
-    public RegisterUserUseCase(UserAuthenticateValidator validator, IRegisterUserAction registerUser)
+    public RegisterUserUseCase(UserAuthenticateValidator validator, IRegisterUserActions registerUser)
     {
         _validator = validator;
         _registerUser = registerUser;

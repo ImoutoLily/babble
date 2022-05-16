@@ -8,7 +8,6 @@ public class UserAuthenticateValidator : AbstractValidator<UserAuthenticate>
     public UserAuthenticateValidator()
     {
         RuleFor(x => x.Email)
-            .NotEmpty()
             .EmailAddress()
             .WithErrorCode(Error.InvalidEmail.Code)
             .WithMessage(Error.InvalidEmail.Message);
