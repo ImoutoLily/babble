@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Babble.Core.Models\Babble.Core.Models.csproj" />
+    </ItemGroup>
+
 </Project>

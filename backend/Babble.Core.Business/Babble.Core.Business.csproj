@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="UseCases" />
+      <ProjectReference Include="..\Babble.Core.Business.Actions\Babble.Core.Business.Actions.csproj" />
+      <ProjectReference Include="..\Babble.Core.Models\Babble.Core.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.0.1" />
     </ItemGroup>
 
 </Project>
