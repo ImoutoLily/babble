@@ -74,4 +74,31 @@ public class RegisterUserUseCaseTests
         Assert.Equal(1, result.Errors.Count);
         Assert.Equal("1000", result.Errors.First().Code);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("MyUsername@")]
+    [InlineData("My far too long username that will never ever be valid")]
+    [InlineData("123456789")]
+    public async Task Register_ShouldHaveInvalidUserName(string userName)
+    {
+        var authenticate = new UserAuthenticate
+        {
+            Email = "myemail@hotmail.com",
+            UserName = userName,
+            Password = "Password123*"
+        };
+
+        _registerUserActionsMock.Setup(x => x.IsEmailInUse(authenticate.Email))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.IsUserNameInUse(authenticate.UserName))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.Register(authenticate))
+            .ReturnsAsync(new User { Email = authenticate.Email, UserName = authenticate.UserName });
+
+        var result = await _registerUser.Register(authenticate);
+        
+        Assert.Equal(1, result.Errors.Count);
+        Assert.Equal("1001", result.Errors.First().Code);
+    }
 }
