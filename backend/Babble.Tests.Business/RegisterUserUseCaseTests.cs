@@ -52,7 +52,7 @@ public class RegisterUserUseCaseTests
     [InlineData("")]
     [InlineData("just some text")]
     [InlineData("not@a@email.com")]
-    [InlineData("this@should.be.invalid.with.so.many.extensions")]
+    [InlineData("@hotmail.com")]
     public async Task Register_ShouldHaveInvalidEmail(string email)
     {
         var authenticate = new UserAuthenticate
@@ -127,5 +127,51 @@ public class RegisterUserUseCaseTests
         
         Assert.Equal(1, result.Errors.Count);
         Assert.Equal("1002", result.Errors.First().Code);
+    }
+
+    [Fact]
+    public async Task Register_ShouldHaveEmailAlreadyInUse()
+    {
+        var authenticate = new UserAuthenticate
+        {
+            Email = "myemail@hotmail.com",
+            UserName = "Someone",
+            Password = "Password123*"
+        };
+
+        _registerUserActionsMock.Setup(x => x.IsEmailInUse(authenticate.Email))
+            .ReturnsAsync(true);
+        _registerUserActionsMock.Setup(x => x.IsUserNameInUse(authenticate.UserName))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.Register(authenticate))
+            .ReturnsAsync(new User());
+
+        var result = await _registerUser.Register(authenticate);
+        
+        Assert.Equal(1, result.Errors.Count);
+        Assert.Equal("1003", result.Errors.First().Code);
+    }
+
+    [Fact]
+    public async Task Register_ShouldHaveUserNameAlreadyInUse()
+    {
+        var authenticate = new UserAuthenticate
+        {
+            Email = "myemail@hotmail.com",
+            UserName = "Someone",
+            Password = "Password123*"
+        };
+
+        _registerUserActionsMock.Setup(x => x.IsEmailInUse(authenticate.Email))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.IsUserNameInUse(authenticate.UserName))
+            .ReturnsAsync(true);
+        _registerUserActionsMock.Setup(x => x.Register(authenticate))
+            .ReturnsAsync(new User());
+
+        var result = await _registerUser.Register(authenticate);
+        
+        Assert.Equal(1, result.Errors.Count);
+        Assert.Equal("1004", result.Errors.First().Code);
     }
 }
