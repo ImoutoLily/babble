@@ -101,4 +101,31 @@ public class RegisterUserUseCaseTests
         Assert.Equal(1, result.Errors.Count);
         Assert.Equal("1001", result.Errors.First().Code);
     }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("Invalidpassword")]
+    [InlineData("@@@@@@@@@@123")]
+    [InlineData("waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaytoolong")]
+    public async Task Register_ShouldHaveInvalidPassword(string password)
+    {
+        var authenticate = new UserAuthenticate
+        {
+            Email = "myemail@hotmail.com",
+            UserName = "Someone",
+            Password = password
+        };
+
+        _registerUserActionsMock.Setup(x => x.IsEmailInUse(authenticate.Email))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.IsUserNameInUse(authenticate.UserName))
+            .ReturnsAsync(false);
+        _registerUserActionsMock.Setup(x => x.Register(authenticate))
+            .ReturnsAsync(new User { Email = authenticate.Email, UserName = authenticate.UserName });
+
+        var result = await _registerUser.Register(authenticate);
+        
+        Assert.Equal(1, result.Errors.Count);
+        Assert.Equal("1002", result.Errors.First().Code);
+    }
 }
