@@ -23,7 +23,17 @@ public class RegisterUserUseCase
         {
             return Result.FailFromValidation<User>(result.Errors);
         }
-        
+
+        if (await _registerUser.IsEmailInUse(userAuthenticate.Email!))
+        {
+            
+        }
+
+        if (await _registerUser.IsUserNameInUse(userAuthenticate.UserName!))
+        {
+            
+        }
+
         var user = await _registerUser.Register(userAuthenticate);
 
         return Result.Ok(user);

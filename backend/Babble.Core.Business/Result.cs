@@ -24,6 +24,16 @@ public class Result
         return new Result<T>(data);
     }
 
+    public static Result Fail(Error error)
+    {
+        return new Result(new Collection<Error> { error });
+    }
+
+    public static Result<T> Fail<T>(Error error)
+    {
+        return new Result<T>(new Collection<Error> { error });
+    }
+
     public static Result Fail(IList<Error> errors)
     {
         return new Result(errors);
@@ -36,7 +46,7 @@ public class Result
 
     public static Result FailFromValidation(IEnumerable<ValidationFailure> validationFailures)
     {
-        var errors = validationFailures.Select(x => 
+        var errors = validationFailures.Select(x =>
             new Error(x.ErrorCode, x.Severity.ToString(), x.ErrorMessage));
 
         return new Result(errors.ToList());
@@ -44,7 +54,7 @@ public class Result
 
     public static Result<T> FailFromValidation<T>(IEnumerable<ValidationFailure> validationFailures)
     {
-        var errors = validationFailures.Select(x => 
+        var errors = validationFailures.Select(x =>
             new Error(x.ErrorCode, x.Severity.ToString(), x.ErrorMessage));
 
         return new Result<T>(errors.ToList());
